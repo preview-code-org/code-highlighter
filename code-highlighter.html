@@ -225,18 +225,21 @@ Syntax highlighting for textual diffs.
       _splitHunk: function (e) {
         var path = this._getComposedPath(e)[0];
         var lineNumber = Number(path.getAttribute('index')) + 1;
-        if (path.localName === 'iron-icon' && lineNumber !== this._amountLines) {
-          var newElem = {};
-          var x = this.code.split('\n');
-          newElem.code = x.slice(lineNumber, this.code.length - 1).join('\n');
-          newElem.beforeStart = path.getAttribute('before');
-          newElem.afterStart = path.getAttribute('after');
-          newElem.index = this.index;
-          this.code = x.slice(0, lineNumber).join('\n');
-          this.fire('add-hunk', newElem);
+        if (path.localName === 'iron-icon') {
+          if (lineNumber !== this._amountLines) {
+            var newElem = {};
+            var x = this.code.split('\n');
+            newElem.code = x.slice(lineNumber, this.code.length - 1).join('\n');
+            newElem.beforeStart = path.getAttribute('before');
+            newElem.afterStart = path.getAttribute('after');
+            newElem.index = this.index;
+            this.code = x.slice(0, lineNumber).join('\n');
+            this.fire('add-hunk', newElem);
+          } else {
+            this.fire('add-comment');
+          }
         }
       },
-
       // For browsers that support neither Event.path and Event.composedPath.
       // from: https://stackoverflow.com/questions/36845515/mouseevent-path-equivalent-in-firefox-safari
       _getComposedPath: function (e) {

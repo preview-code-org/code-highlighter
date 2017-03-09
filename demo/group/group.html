@@ -37,7 +37,8 @@ This code may only be used under the BSD style license found in LICENSE.txt
         diffs: Array
       },
       listeners: {
-        'add-hunk': '_resize'
+        'add-hunk-with-comment': '_resize',
+        'resize-list': '_resize'
       },
       created: function () {
         fetch('../hunk.json')
@@ -49,7 +50,8 @@ This code may only be used under the BSD style license found in LICENSE.txt
                 'code': x.diff,
                 'diffId': x.diff_id,
                 'beforeStart': x.before_start,
-                'afterStart': x.after_start
+                'afterStart': x.after_start,
+                'comments': x.comments
               }];
             }.bind(this));
           }.bind(this));

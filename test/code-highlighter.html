@@ -85,13 +85,31 @@ This code may only be used under the BSD style license found in LICENSE.txt
       it('tapping on last line should not fire', function (done) {
         elem.code = 'one liner \n'
         var icon = Polymer.dom(elem.root).querySelector('iron-icon');
-        flush(function () {
-          elem.addEventListener('add-hunk', function () {
-            done(new Error('This event should not have been fired'));
-          });
+        elem.addEventListener('add-hunk', function () {
+          done(new Error('This event should not have been fired'));
         });
         MockInteractions.tap(icon);
         setTimeout(done, 10);
+      });
+
+      it('tapping twice only fires comment', function () {
+        var icon = Polymer.dom(elem.root).querySelector('iron-icon');
+        var countHunk = 0;
+        var countComment = 0;
+
+        elem.addEventListener('add-hunk', function (e) {
+          assert.equal(countHunk, 0);
+          assert.equal(e.detail.code, ' second line \n');
+          countHunk++;
+        });
+        elem.addEventListener('add-comment', function () {
+          assert.equal(countComment, 0);
+          countComment++;
+        });
+
+        MockInteractions.tap(icon);
+        MockInteractions.tap(icon);
+
       });
 
       it('mouseover should show icon', function (done) {

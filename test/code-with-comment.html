@@ -41,11 +41,11 @@ This code may only be used under the BSD style license found in LICENSE.txt
       it('firing event shows comments', function () {
         elem.hideAddComments = true;
         assert.equal(elem.hideAddComments, true);
-        elem.fire('add-comment');
+        elem.fire('split-code');
         assert.equal(elem.hideAddComments, false);
       });
 
-      it('add-hunk fires add-hunk-with-comment', function () {
+      it('split-code fires add-hunk-with-comment', function () {
         elem.hideAddComments = true;
 
         elem.addEventListener('add-hunk-with-comment', function (e) {
@@ -56,7 +56,7 @@ This code may only be used under the BSD style license found in LICENSE.txt
           assert.equal(e.detail.index, 1);
         });
 
-        elem.fire('add-hunk', {beforeStart: 0, afterStart: 1, code: ' second line \n', index: 1});
+        elem.fire('split-code', {beforeStart: 0, afterStart: 1, code: ' second line \n', index: 1});
         assert.equal(elem.hideAddComments, false);
       });
     });

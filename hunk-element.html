@@ -25,11 +25,12 @@ Syntax highlighting for textual diffs.
     </style>
 
     <template is="dom-repeat" items="{{hunks}}">
-      <code-with-comment code="{{item.code}}" before-start="{{item.beforeStart}}" after-start="{{item.afterStart}}" comments="{{item.comments}}" index-item="[[index]]" hide-comments="[[hideComments]]"></code-with-comment>
+      <code-with-comment code="{{item.code}}" before-start="{{item.beforeStart}}" after-start="{{item.afterStart}}" comments="{{item.comments}}"
+        index-item="[[index]]" hide-comments="[[hideComments]]"></code-with-comment>
     </template>
 
   </template>
-  
+
   <script>
     Polymer({
       is: 'hunk-element',
@@ -48,7 +49,9 @@ Syntax highlighting for textual diffs.
       },
       _addHunk: function (e) {
         var details = e.detail;
-        this.splice('hunks', details.index + 1, 0, {code: details.code, beforeStart: details.beforeStart, afterStart: details.afterStart, comments: details.comments});
+        if (details.index) {
+          this.splice('hunks', details.index + 1, 0, { code: details.code, beforeStart: details.beforeStart, afterStart: details.afterStart, comments: details.comments });
+        }
       }
     })
   </script>

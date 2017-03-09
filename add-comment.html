@@ -28,21 +28,25 @@ This code may only be used under the BSD style license found in LICENSE.txt
           type: Array,
           notify: true
         },
-        hide: {
+        hidden: {
           type: Boolean,
-          notify: true
+          notify: true,
+          reflectToAttribute: true
         }
       },
       _addComment: function () {
-        this.push('comments', this.comment);
-        this.fire('toggle-add-comment');
-        this.comment = '';
-        this.hide = true;
+        if (this.comment.replace(/\s/g, '') !== '') {
+          this.push('comments', this.comment);
+          this.fire('toggle-add-comment');
+          this.comment = '';
+          this.hidden = true;
+        }
       },
 
       _hide: function () {
+        this.comments = '';
         this.fire('toggle-add-comment');
-        this.hide = true;
+        this.hidden = true;
       }
     });
   </script>

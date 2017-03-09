@@ -1,6 +1,5 @@
 <link rel="import" href="add-comment.html">
 <link rel="import" href="comment-list.html">
-<link rel="import" href="../paper-button/paper-button.html">
 
 <dom-module id="comment-container">
   <template>
@@ -8,13 +7,13 @@
       :host {
         display: block;
       }
-      
+
       [hidden] {
         display: none !important;
       }
     </style>
-    
-    <add-comment hidden$="[[hideAdd]]" hide="{{hideAdd}}" comments="{{comments}}"></add-comment>
+
+    <add-comment hidden$="{{hideAdd}}" comments="{{comments}}"></add-comment>
     <comment-list list="[[comments]]"></comment-list>
   </template>
   <script>

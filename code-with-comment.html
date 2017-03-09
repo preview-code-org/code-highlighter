@@ -15,10 +15,14 @@ This code may only be used under the BSD style license found in LICENSE.txt
       :host {
         display: block
       }
+      
+      [hidden] {
+        display: none !important;
+      }
     </style>
 
     <code-highlighter code="{{code}}" before-start="{{beforeStart}}" after-start="{{afterStart}}" can-split="true" index="[[indexItem]]"></code-highlighter>
-    <comment-container hide-add="{{hideAddComments}}" comments="{{comments}}"></comment-container>
+    <comment-container hidden="[[hideComments]]" hide-add="{{hideAddComments}}" comments="{{comments}}"></comment-container>
   </template>
 
   <script>
@@ -46,7 +50,8 @@ This code may only be used under the BSD style license found in LICENSE.txt
           type: Boolean,
           value: true
         },
-        comments: Array
+        comments: Array,
+        hideComments: Boolean
       },
       _addHunk: function (e) {
         this.hideAddComments = false;
@@ -57,7 +62,7 @@ This code may only be used under the BSD style license found in LICENSE.txt
         this.comments = [];
       },
       _showAddComment: function () {
-        this.fire('resize-list');
+        this.fire('toggle-add-comment');
         this.hideAddComments = false;
       }
     });

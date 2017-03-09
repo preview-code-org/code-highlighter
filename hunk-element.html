@@ -25,7 +25,7 @@ Syntax highlighting for textual diffs.
     </style>
 
     <template is="dom-repeat" items="{{hunks}}">
-      <code-with-comment code="{{item.code}}" before-start="{{item.beforeStart}}" after-start="{{item.afterStart}}" comments="{{item.comments}}" index-item="[[index]]"></code-with-comment>
+      <code-with-comment code="{{item.code}}" before-start="{{item.beforeStart}}" after-start="{{item.afterStart}}" comments="{{item.comments}}" index-item="[[index]]" hide-comments="[[hideComments]]"></code-with-comment>
     </template>
 
   </template>
@@ -43,7 +43,8 @@ Syntax highlighting for textual diffs.
           value: function () {
             return [];
           }
-        }
+        },
+        hideComments: Boolean
       },
       _addHunk: function (e) {
         var details = e.detail;

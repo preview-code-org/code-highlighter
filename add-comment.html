@@ -35,13 +35,13 @@ This code may only be used under the BSD style license found in LICENSE.txt
       },
       _addComment: function () {
         this.push('comments', this.comment);
-        this.fire('resize-list');
+        this.fire('toggle-add-comment');
         this.comment = '';
         this.hide = true;
       },
 
       _hide: function () {
-        this.fire('resize-list');
+        this.fire('toggle-add-comment');
         this.hide = true;
       }
     });

@@ -41,14 +41,23 @@ This code may only be used under the BSD style license found in LICENSE.txt
       it('firing event shows comments', function () {
         elem.hideAddComments = true;
         assert.equal(elem.hideAddComments, true);
-        elem.fire('split-code');
+        elem.fire('click-line');
         assert.equal(elem.hideAddComments, false);
       });
 
-      it('split-code fires add-hunk-with-comment', function () {
+      it('code is splitted correct', function (done) {
+        elem.addEventListener('click-line', function (e) {
+          assert.equal(elem.code, 'first line ');
+          assert.equal(e.detail.code, ' second line \n');
+          done();
+        });
+        elem.fire('click-line', {lineNumber: 1, lines: 2})
+      });
+
+      it('click-line fires add-chunk-with-comment', function () {
         elem.hideAddComments = true;
 
-        elem.addEventListener('add-hunk-with-comment', function (e) {
+        elem.addEventListener('add-chunk-with-comment', function (e) {
           assert.equal(e.detail.comments, 'test');
           assert.equal(e.detail.beforeStart, 0)
           assert.equal(e.detail.afterStart, 1)
@@ -56,8 +65,24 @@ This code may only be used under the BSD style license found in LICENSE.txt
           assert.equal(e.detail.index, 1);
         });
 
-        elem.fire('split-code', {beforeStart: 0, afterStart: 1, code: ' second line \n', index: 1});
+        elem.fire('click-line', {beforeStart: 0, afterStart: 1, code: ' second line \n', index: 1});
         assert.equal(elem.hideAddComments, false);
+      });
+
+      it('resets comments when new hunk end', function (done) {
+        elem.addEventListener('click-line', function () {
+          assert.deepEqual(elem.comments, []);
+          done();
+        });
+        elem.fire('click-line', {lineNumber: 1, lines: 2})
+      });
+
+      it('does not reset comment, when adding a comment', function (done) {
+        elem.addEventListener('click-line', function () {
+          assert.deepEqual(elem.comments, ['test']);
+          done();
+        });
+        elem.fire('click-line', {lineNumber: 1, lines: 1})
       });
     });
   </script>

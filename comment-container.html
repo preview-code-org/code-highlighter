@@ -13,8 +13,8 @@
       }
     </style>
 
-    <add-comment hidden$="{{hideAdd}}" comments="{{comments}}"></add-comment>
     <comment-list list="[[comments]]"></comment-list>
+    <add-comment hidden="{{hideAdd}}" comments="{{comments}}"></add-comment>
   </template>
   <script>
     Polymer({
@@ -27,7 +27,8 @@
         hideAdd: {
           type: Boolean,
           value: false,
-          notify: true
+          notify: true,
+          reflectToAttribute: true
         }
       }
     });

@@ -21,7 +21,7 @@ This code may only be used under the BSD style license found in LICENSE.txt
       }
     </style>
 
-    <code-highlighter code="{{code}}" before-start="{{beforeStart}}" after-start="{{afterStart}}" can-split="true" index="[[indexItem]]"></code-highlighter>
+    <code-highlighter code="{{code}}" before-start="{{beforeStart}}" after-start="{{afterStart}}" can-split="true"></code-highlighter>
     <comment-container hidden="[[hideComments]]" hide-add="{{hideAddComments}}" comments="{{comments}}"></comment-container>
   </template>
 
@@ -29,7 +29,7 @@ This code may only be used under the BSD style license found in LICENSE.txt
     Polymer({
       is: 'code-with-comment',
       listeners: {
-        'split-code': '_splitCode',
+        'click-line': '_splitCode',
       },
       properties: {
         code: {
@@ -49,16 +49,26 @@ This code may only be used under the BSD style license found in LICENSE.txt
           type: Boolean,
           value: true
         },
-        comments: Array,
-        hideComments: Boolean
+        hideComments: {
+          type: Boolean,
+          value: false
+        },
+        comments: Array
       },
       _splitCode: function (e) {
         this.hideAddComments = false;
         e.stopPropagation();
-        var elem = e.detail;
-        elem.comments = this.comments;
-        this.fire('add-hunk-with-comment', elem);
-        this.comments = [];
+
+        var newHunk = e.detail;
+        if (newHunk.lineNumber !== newHunk.lines) {
+          newHunk.comments = this.comments;
+          newHunk.index = this.indexItem;
+          this.comments = [];
+          var x = this.code.split('\n');
+          newHunk.code = x.slice(newHunk.lineNumber, this.code.length - 1).join('\n');
+          this.code = x.slice(0, newHunk.lineNumber).join('\n');
+          this.fire('add-chunk-with-comment', newHunk);
+        }
       }
     });
   </script>

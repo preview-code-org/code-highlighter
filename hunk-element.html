@@ -36,7 +36,7 @@ Syntax highlighting for textual diffs.
       is: 'hunk-element',
 
       listeners: {
-        'add-hunk-with-comment': '_addHunk'
+        'add-chunk-with-comment': '_addHunk'
       },
       properties: {
         hunks: {
@@ -48,10 +48,8 @@ Syntax highlighting for textual diffs.
         hideComments: Boolean
       },
       _addHunk: function (e) {
-        var details = e.detail;
-        if (details.index) {
-          this.splice('hunks', details.index + 1, 0, { code: details.code, beforeStart: details.beforeStart, afterStart: details.afterStart, comments: details.comments });
-        }
+        var newHunk = e.detail;
+        this.splice('hunks', newHunk.index + 1, 0, {code: newHunk.code, beforeStart: newHunk.beforeStart, afterStart: newHunk.afterStart, comments: newHunk.comments});
       }
     })
   </script>

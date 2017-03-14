@@ -130,8 +130,7 @@ Syntax highlighting for textual diffs.
         canSplit: {
           type: Boolean,
           value: false
-        },
-        index: Number
+        }
       },
       attached: function () {
         this._onMouseHover = this._onMouseHover.bind(this);
@@ -224,19 +223,14 @@ Syntax highlighting for textual diffs.
 
       _splitHunk: function (e) {
         var path = e.target;
-        var lineNumber = Number(path.getAttribute('index')) + 1;
         if (path.localName === 'iron-icon') {
-          var newElem = {};
-          if (lineNumber !== this._amountLines) {
-            var x = this.code.split('\n');
-            newElem.code = x.slice(lineNumber, this.code.length - 1).join('\n');
-            newElem.beforeStart = path.getAttribute('before');
-            newElem.afterStart = path.getAttribute('after');
-            newElem.index = this.index;
-            this.code = x.slice(0, lineNumber).join('\n');
-            this.fire('split-code', newElem);
-          }
+          var lineInfo = {};
+          lineInfo.beforeStart = path.getAttribute('before');
+          lineInfo.afterStart = path.getAttribute('after');
+          lineInfo.lineNumber = Number(path.getAttribute('index')) + 1;
+          lineInfo.lines = this._amountLines;
         }
+        this.fire('click-line', lineInfo);
       },
 
       _onMouseHover: function (e) {
